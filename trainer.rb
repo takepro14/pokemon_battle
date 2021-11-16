@@ -1,17 +1,15 @@
 require_relative "pokemon"
 
 class Trainer
-  attr_reader :tr_name, :choice_command
+  attr_reader :tr_name
 
   def initialize(tr_name)
     @tr_name = tr_name
-    @choice_command = []
   end
 
   def choice_command(whose_command)
     num = gets.to_i
-    @choice_command << whose_command[num - 1]
-    puts ""
+    whose_command[num - 1]
   end
 
 

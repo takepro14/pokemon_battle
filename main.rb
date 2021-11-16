@@ -3,9 +3,6 @@ require_relative "pokemon"
 require_relative "command"
 require_relative "trainer"
 
-
-# binding.pry
-
 # [事前準備] ポケモンを準備
 ENEMY = "ヒトカゲ"
 ALLIES = "ゼニガメ"
@@ -18,16 +15,21 @@ this_allies_name = allies.name
 
 # [事前準備] ポケモンのわざを準備
 allies_command = Command.import(path: "zenigame.csv")
+# binding.pry
+
 
 # [事前準備] トレーナーを準備
 trainer = Trainer.new(TRAINER)
 trainer_name = trainer.tr_name
 
+# [事前準備] 敵のHPを準備
+enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
+
 
 # ░, ▓
 # ポケモンが現れる（CSVからランダム出現）
 puts "あっ！野生の #{this_enemy_name} があらわれた！"
-puts "【 #{this_enemy_name} Lv.5 / HP ▓▓▓▓▓▓▓▓▓▓ 】"
+puts "【 #{this_enemy_name} Lv.5 / HP #{enemy_hp} 】"
 puts ""
 # sleep 1
 
@@ -35,32 +37,37 @@ puts ""
 puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
 puts "【 #{this_allies_name} Lv.5 / HP ▓▓▓▓▓▓▓▓▓▓ 】"
 puts ""
-allies.display(allies_command)
-puts ""
-# sleep 1
 
-# トレーナーの指示出し
-print "#{this_allies_name} はどうする？ > "
-# binding.pry
-trainer.choice_command(allies_command)
-# binding.pry
+while enemy_hp.include?("▓") do
+  # トレーナーの指示出し
+  allies.display(allies_command)
+  puts ""
+  # sleep 1
+  print "#{this_allies_name} はどうする？ > "
+  command = trainer.choice_command(allies_command)
 
-p choice_command
+  # コマンドを実行し、相手ポケモンにダメージ
+  puts "#{this_allies_name} の #{command.waza}！"
+  puts "#{this_enemy_name} に #{command.damage} のダメージ！"
+  puts ""
+  if command.waza == "あわ"
+    enemy_hp = enemy_hp.chomp("▓▓▓▓") + "░░░░"
+  elsif
+    command.waza == "バブルこうせん"
+    enemy_hp = enemy_hp.chomp("▓▓▓▓▓▓") + "░░░░░░"
+  elsif
+    command.waza == "しっぽをふる"
+    enemy_hp = enemy_hp
+  end
 
-# allies_command["command"]
+  puts "【 #{this_enemy_name} Lv.5 / HP #{enemy_hp} 】"
 
+end
 
+# 倒したとき
+"#{this_enemy_name} は たおれた！"
+puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
 
-
-# puts "#{this_allies_name} はどうする？ > "
-# @command_a.each.with_index(1) do |index, command, damage|
-#   cmd = "#{index}: #{command} #{damage}"
-#   puts cmd
-# end
-
-
-
-# コマンドを実行し、相手ポケモンにダメージ
 
 
 # 相手のポケモンが倒れていなければ、コマンドを実行
