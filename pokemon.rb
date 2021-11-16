@@ -9,7 +9,7 @@ class Pokemon
 
   def display(whose_command)
     whose_command.each.with_index(1) do |command, index|
-      puts "#{index}. #{command.waza} / 威力: #{command.damage} "
+      puts "#{index}. #{command.waza} / いりょく: #{command.damage} "
     end
   end
 end
