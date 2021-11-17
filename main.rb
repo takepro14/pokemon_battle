@@ -77,10 +77,14 @@ until enemy_hp.empty? do
 
   # 相手ポケモンにダメージ
   puts "#{this_enemy_name} に #{decide_a_command.damage} のダメージ！"
-  enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
+    # オーバーキルになる場合の調整
+    if enemy_hp.length < decide_a_command.chomp.length
+      enemy_hp = enemy_hp.chomp(enemy_hp)
+    else
+      enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
+    end
   puts ""
   sleep 1
-
 
   # 相手ポケモンのHP表示
   if enemy_hp.empty?
@@ -111,6 +115,12 @@ until enemy_hp.empty? do
 
   # 味方ポケモンにダメージ
   puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
+    # オーバーキルになる場合の調整
+    if allies_hp.length < decide_e_command.chomp.length
+      allies_hp = allies_hp.chomp(allies_hp)
+    else
+      allies_hp = allies_hp.chomp(decide_e_command.chomp)
+    end
   allies_hp = allies_hp.chomp(decide_e_command.chomp)
   puts ""
   sleep 1
