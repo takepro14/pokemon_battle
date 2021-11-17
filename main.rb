@@ -20,6 +20,7 @@ this_allies_name = allies.name
 
 # ポケモンのわざを準備
 allies_command = Command.import(path: "zenigame.csv")
+enemy_command = Command.import(path: "hitokage.csv")
 
 # トレーナーを準備
 trainer = Trainer.new(TRAINER)
@@ -34,44 +35,108 @@ allies_hp = "▓▓▓▓▓▓▓▓▓▓"
 #############################
 # 敵ポケモンが現れる
 puts "あっ！野生の #{this_enemy_name} があらわれた！"
-puts "【 #{this_enemy_name} Lv.5 / HP #{enemy_hp} 】"
+puts "*" * 30
+puts "■#{this_enemy_name}"
+puts "Lv.5 | HP #{enemy_hp}"
+puts "*" * 30
 puts ""
-# sleep 1
+puts ""
+sleep 1
 
 # こちらのポケモンを繰り出す
 puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
-puts "【 #{this_allies_name} Lv.5 / HP #{allies_hp} 】"
+puts "*" * 30
+puts "■#{this_allies_name}"
+puts "Lv.5 | HP #{allies_hp}"
+puts "*" * 30
 puts ""
+puts ""
+sleep 1
+
+# binding.pry
 
 #############################
 # ポケモンバトル
 #############################
 until enemy_hp.empty? do
   # わざの表示
+  puts "<#{this_allies_name} の わざ>"
   allies.display(allies_command)
   puts ""
-  # sleep 1
 
   # わざの選択
   print "#{this_allies_name} はどうする？ > "
-  command = trainer.choice_command(allies_command)
+  decide_a_command = trainer.choice_command(allies_command)
+  puts ""
+  sleep 1
 
+  ### 味方のターン
   # トレーナーの指示出し
-  puts "#{trainer_name}「#{this_allies_name}、 #{command.waza}！"
+  puts "#{trainer_name}「#{this_allies_name}、 #{decide_a_command.waza}！」"
+  sleep 1
 
   # 相手ポケモンにダメージ
-  puts "#{this_enemy_name} に #{command.damage} のダメージ！"
+  puts "#{this_enemy_name} に #{decide_a_command.damage} のダメージ！"
+  enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
   puts ""
-  enemy_hp = enemy_hp.chomp(command.chomp)
+  sleep 1
+
 
   # 相手ポケモンのHP表示
   if enemy_hp.empty?
-    puts "【 #{this_enemy_name} Lv.5 / HP ひんし 】"
+    puts "*" * 30
+    puts "■#{this_enemy_name}"
+    puts "Lv.5 | HP ひんし"
+    puts "*" * 30
+    puts ""
+    puts ""
+    break
   else
-    puts "【 #{this_enemy_name} Lv.5 / HP #{enemy_hp} 】"
+    puts "*" * 30
+    puts "■#{this_enemy_name}"
+    puts "Lv.5 | HP #{enemy_hp}"
+    puts "*" * 30
+    puts ""
+    puts ""
+  end
+
+  ### 相手のターン
+  # わざをランダムで選択
+  decide_e_command = enemy_command.sample
+
+  # わざを繰り出す
+  puts "野生の #{this_enemy_name} の、 #{decide_e_command.waza}！"
+  puts ""
+  sleep 1
+
+  # 味方ポケモンにダメージ
+  puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
+  allies_hp = allies_hp.chomp(decide_e_command.chomp)
+  puts ""
+  sleep 1
+
+  # 味方ポケモンが倒れたらbreakし、目の前が真っ白
+  if allies_hp.empty?
+    puts "*" * 30
+    puts "#{this_allies_name}"
+    puts "Lv.5 | HP ひんし"
+    puts "*" * 30
+    puts ""
+    break
+  else
+    puts "*" * 30
+    puts "#{this_allies_name}"
+    puts "Lv.5 | HP #{enemy_hp}"
+    puts "*" * 30
+    puts ""
   end
 end
 
 # 倒したとき
-"#{this_enemy_name} は たおれた！"
-puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
+if allies_hp.empty?
+  puts "#{this_allies_name} は たおれた！"
+  puts "#{trainer_name} は めのまえ が まっしろになった。"
+else enemy_hp.empty?
+  puts "#{this_enemy_name} は たおれた！"
+  puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
+end
