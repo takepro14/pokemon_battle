@@ -8,8 +8,17 @@ class Trainer
   end
 
   def choice_command(whose_command)
-    num = gets.to_i
-    whose_command[num - 1]
+    # 入力を必須にする
+    loop{
+      num = gets.to_i
+      # binding.pry
+      if num != 0 then
+        @num = num
+        break
+      end
+      puts "わざ が せんたくされていません。もういちど せんたくしてください。"
+    }
+    whose_command[@num - 1]
   end
 
 
