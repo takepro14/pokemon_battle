@@ -116,12 +116,12 @@ until enemy_hp.empty? do
   # 味方ポケモンにダメージ
   puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
     # オーバーキルになる場合の調整
+    # binding.pry
     if allies_hp.length < decide_e_command.chomp.length
       allies_hp = allies_hp.chomp(allies_hp)
     else
       allies_hp = allies_hp.chomp(decide_e_command.chomp)
     end
-  allies_hp = allies_hp.chomp(decide_e_command.chomp)
   puts ""
   sleep 1
 
@@ -136,7 +136,7 @@ until enemy_hp.empty? do
   else
     puts "*" * 30
     puts "#{this_allies_name}"
-    puts "Lv.5 | HP #{enemy_hp}"
+    puts "Lv.5 | HP #{allies_hp}"
     puts "*" * 30
     puts ""
   end
