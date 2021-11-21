@@ -1,8 +1,20 @@
 # pokemon_battle
-rubyでポケモンバトル
 
-- [Ruby](https://www.ruby-lang.org/ja/)
-- [Ruby公式リファレンス](https://www.ruby-lang.org/ja/documentation/)
-- [オブジェクト指向スクリプト言語 Ruby リファレンスマニュアル](https://docs.ruby-lang.org/ja/latest/doc/index.html)
-- [最速Rubyリファレンスマニュアル検索！ | るりまサーチ](https://docs.ruby-lang.org/ja/search/)
-- [Ruby入門](https://www.javadrive.jp/ruby/)
+Ruby 学習用のサンプルプログラムです。
+
+Pure Ruby のみで書かれているため、文字情報のみ。
+ポケモンの画像・絵などは登場しません。
+
+できること
+
+- ターミナルでコマンドを選択
+- ターン制でのバトル
+- 勝敗に応じて異なるメッセージの表示
+- 敵の攻撃はランダム
+
+今後機能追加予定
+
+- 敵ポケモンのランダム出現機能
+- きゅうしょに当たった機能
+- 連続バトル機能
+- 連続バトル時、レベルアップ機能
