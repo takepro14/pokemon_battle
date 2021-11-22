@@ -8,19 +8,35 @@ require_relative "trainer"
 #############################
 # 変数, インスタンス生成
 #############################
+### 敵ポケモンがランダムに選択される
+# pokemon.csv: name, command.csv
+
+
+
 # ポケモンを準備
 ENEMY = "ヒトカゲ"
 ALLIES = "ゼニガメ"
 TRAINER = "たけぴよ"
 
-enemy = Pokemon.new(ENEMY)
+
+# pokemon.csvからポケモンの名前とコマンドCSVのマップを取得
+pokemons = Pokemon.import(path: "pokemon.csv")
+
+# 相手ポケモンをランダムに選択
+randum_num = rand(max = 3)
+enemy = pokemons[randum_num]
 this_enemy_name = enemy.name
-allies = Pokemon.new(ALLIES)
+this_enemy_command = enemy.command_csv
+
+# 味方ポケモンは固定
+allies = pokemons[3]
 this_allies_name = allies.name
+this_allies_command = allies.command_csv
+
 
 # ポケモンのわざを準備
-allies_command = Command.import(path: "zenigame.csv")
-enemy_command = Command.import(path: "hitokage.csv")
+allies_command = Command.import(path: this_allies_command)
+enemy_command = Command.import(path: this_enemy_command)
 
 # トレーナーを準備
 trainer = Trainer.new(TRAINER)
