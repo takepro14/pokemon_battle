@@ -1,4 +1,5 @@
 require_relative "command"
+# require "csv"
 
 class Pokemon
   attr_reader :name, :command_csv
