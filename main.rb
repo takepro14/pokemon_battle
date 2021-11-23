@@ -1,7 +1,8 @@
 require "pry"
-require_relative "pokemon"
-require_relative "command"
-require_relative "trainer"
+require "csv"
+require_relative "./lib/pokemon"
+require_relative "./lib/command"
+require_relative "./lib/trainer"
 
 # binding.pry
 
@@ -20,18 +21,19 @@ TRAINER = "たけぴよ"
 
 
 # pokemon.csvからポケモンの名前とコマンドCSVのマップを取得
-pokemons = Pokemon.import(path: "pokemon.csv")
+pokemons = Pokemon.import(path: "./csv/pokemon.csv")
 
 # 相手ポケモンをランダムに選択
 randum_num = rand(max = 3)
 enemy = pokemons[randum_num]
 this_enemy_name = enemy.name
-this_enemy_command = enemy.command_csv
+this_enemy_command = "./csv/#{enemy.command_csv}"
+
 
 # 味方ポケモンは固定
 allies = pokemons[3]
 this_allies_name = allies.name
-this_allies_command = allies.command_csv
+this_allies_command = "./csv/#{allies.command_csv}"
 
 
 # ポケモンのわざを準備
@@ -52,7 +54,7 @@ allies_hp = "▓▓▓▓▓▓▓▓▓▓"
 # 敵ポケモンが現れる
 puts "あっ！野生の #{this_enemy_name} があらわれた！"
 puts "*" * 30
-puts "■#{this_enemy_name}"
+puts "■ #{this_enemy_name}"
 puts "Lv.5 | HP #{enemy_hp}"
 puts "*" * 30
 puts ""
@@ -62,7 +64,7 @@ sleep 1
 # こちらのポケモンを繰り出す
 puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
 puts "*" * 30
-puts "■#{this_allies_name}"
+puts "■ #{this_allies_name}"
 puts "Lv.5 | HP #{allies_hp}"
 puts "*" * 30
 puts ""
@@ -105,7 +107,7 @@ until enemy_hp.empty? do
   # 相手ポケモンのHP表示
   if enemy_hp.empty?
     puts "*" * 30
-    puts "■#{this_enemy_name}"
+    puts "■ #{this_enemy_name}"
     puts "Lv.5 | HP ひんし"
     puts "*" * 30
     puts ""
@@ -113,7 +115,7 @@ until enemy_hp.empty? do
     break
   else
     puts "*" * 30
-    puts "■#{this_enemy_name}"
+    puts "■ #{this_enemy_name}"
     puts "Lv.5 | HP #{enemy_hp}"
     puts "*" * 30
     puts ""

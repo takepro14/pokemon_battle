@@ -1,5 +1,5 @@
 # ポケモンの名前に紐づくコマンド(わざ, ダメージ)をインポートするのみ
-require "csv"
+# require "csv"
 
 class Command
   attr_reader :waza, :damage, :chomp
