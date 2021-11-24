@@ -76,95 +76,117 @@ sleep 1
 #############################
 # ポケモンバトル
 #############################
-until enemy_hp.empty? do
-  # わざの表示
-  puts "<#{this_allies_name} の わざ>"
-  allies.display(allies_command)
-  puts ""
-
-  # わざの選択
-  print "#{this_allies_name} はどうする？ > "
-  decide_a_command = trainer.choice_command(allies_command)
-  puts ""
-  sleep 1
-
-  ### 味方のターン
-  # トレーナーの指示出し
-  puts "#{trainer_name}「#{this_allies_name}、 #{decide_a_command.waza}！」"
-  sleep 1
-
-  # 相手ポケモンにダメージ
-  puts "#{this_enemy_name} に #{decide_a_command.damage} のダメージ！"
-    # オーバーキルになる場合の調整
-    if enemy_hp.length < decide_a_command.chomp.length
-      enemy_hp = enemy_hp.chomp(enemy_hp)
-    else
-      enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
-    end
-  puts ""
-  sleep 1
-
-  # 相手ポケモンのHP表示
-  if enemy_hp.empty?
-    puts "*" * 30
-    puts "■ #{this_enemy_name}"
-    puts "Lv.5 | HP ひんし"
-    puts "*" * 30
-    puts ""
-    puts ""
-    break
-  else
+# 連続バトル
+battle_cnt = 0
+until battle_cnt == 3 do
+  if battle_cnt != 0
+    # 敵ポケモンが現れる
+    enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
+    puts "つづけて野生の #{this_enemy_name} があらわれた！"
     puts "*" * 30
     puts "■ #{this_enemy_name}"
     puts "Lv.5 | HP #{enemy_hp}"
     puts "*" * 30
     puts ""
     puts ""
+    sleep 1
   end
+  # どちらかが倒れるまでループ
+  until enemy_hp.empty? do
+    # わざの表示
+    puts "<#{this_allies_name} の わざ>"
+    allies.display(allies_command)
+    puts ""
 
-  ### 相手のターン
-  # わざをランダムで選択
-  decide_e_command = enemy_command.sample
+    # わざの選択
+    print "#{this_allies_name} はどうする？ > "
+    decide_a_command = trainer.choice_command(allies_command)
+    puts ""
+    sleep 1
 
-  # わざを繰り出す
-  puts "野生の #{this_enemy_name} の、 #{decide_e_command.waza}！"
-  puts ""
-  sleep 1
+    ### 味方のターン
+    # トレーナーの指示出し
+    puts "#{trainer_name}「#{this_allies_name}、 #{decide_a_command.waza}！」"
+    sleep 1
 
-  # 味方ポケモンにダメージ
-  puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
-    # オーバーキルになる場合の調整
-    # binding.pry
-    if allies_hp.length < decide_e_command.chomp.length
-      allies_hp = allies_hp.chomp(allies_hp)
+    # 相手ポケモンにダメージ
+    puts "#{this_enemy_name} に #{decide_a_command.damage} のダメージ！"
+      # オーバーキルになる場合の調整
+      if enemy_hp.length < decide_a_command.chomp.length
+        enemy_hp = enemy_hp.chomp(enemy_hp)
+      else
+        enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
+      end
+    puts ""
+    sleep 1
+
+    # 相手ポケモンのHP表示
+    if enemy_hp.empty?
+      puts "*" * 30
+      puts "■ #{this_enemy_name}"
+      puts "Lv.5 | HP ひんし"
+      puts "*" * 30
+      puts ""
+      puts ""
+      break
     else
-      allies_hp = allies_hp.chomp(decide_e_command.chomp)
+      puts "*" * 30
+      puts "■ #{this_enemy_name}"
+      puts "Lv.5 | HP #{enemy_hp}"
+      puts "*" * 30
+      puts ""
+      puts ""
     end
-  puts ""
-  sleep 1
 
-  # 味方ポケモンが倒れたらbreakし、目の前が真っ白
+    ### 相手のターン
+    # わざをランダムで選択
+    decide_e_command = enemy_command.sample
+
+    # わざを繰り出す
+    puts "野生の #{this_enemy_name} の、 #{decide_e_command.waza}！"
+    puts ""
+    sleep 1
+
+    # 味方ポケモンにダメージ
+    puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
+      # オーバーキルになる場合の調整
+      # binding.pry
+      if allies_hp.length < decide_e_command.chomp.length
+        allies_hp = allies_hp.chomp(allies_hp)
+      else
+        allies_hp = allies_hp.chomp(decide_e_command.chomp)
+      end
+    puts ""
+    sleep 1
+    # 味方ポケモンが倒れたらbreakし、目の前が真っ白
+    if allies_hp.empty?
+      puts "*" * 30
+      puts "#{this_allies_name}"
+      puts "Lv.5 | HP ひんし"
+      puts "*" * 30
+      puts ""
+      break
+    else
+      puts "*" * 30
+      puts "#{this_allies_name}"
+      puts "Lv.5 | HP #{allies_hp}"
+      puts "*" * 30
+      puts ""
+    end
+  end
+
+  # バトル終了時
   if allies_hp.empty?
-    puts "*" * 30
-    puts "#{this_allies_name}"
-    puts "Lv.5 | HP ひんし"
-    puts "*" * 30
-    puts ""
+    puts "#{this_allies_name} は たおれた！"
+    puts "#{trainer_name} は めのまえ が まっしろになった。"
     break
-  else
-    puts "*" * 30
-    puts "#{this_allies_name}"
-    puts "Lv.5 | HP #{allies_hp}"
-    puts "*" * 30
-    puts ""
+  elsif enemy_hp.empty?
+    puts "#{this_enemy_name} は たおれた！"
+    puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
+    battle_cnt += 1
   end
 end
 
-# 倒したとき
-if allies_hp.empty?
-  puts "#{this_allies_name} は たおれた！"
-  puts "#{trainer_name} は めのまえ が まっしろになった。"
-else enemy_hp.empty?
-  puts "#{this_enemy_name} は たおれた！"
-  puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
-end
+# if battle_cnt == 3
+  # "#{trainer_name} は 全てのバトルに勝利した！すごい！"
+# end
