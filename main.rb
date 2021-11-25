@@ -1,57 +1,77 @@
 require "pry"
 require "csv"
-require_relative "./lib/pokemon"
-require_relative "./lib/command"
-require_relative "./lib/trainer"
+require_relative "lib/pokemon"
+require_relative "lib/command"
+require_relative "lib/trainer"
 
-# binding.pry
+TRAINER = "たけぴょ"
+
 
 #############################
-# 変数, インスタンス生成
+# ポケモン名, コマンドCSVマップ取得
 #############################
-### 敵ポケモンがランダムに選択される
-# pokemon.csv: name, command.csv
-
-
-
-# ポケモンを準備
-ENEMY = "ヒトカゲ"
-ALLIES = "ゼニガメ"
-TRAINER = "たけぴよ"
-
-
-# pokemon.csvからポケモンの名前とコマンドCSVのマップを取得
 pokemons = Pokemon.import(path: "./csv/pokemon.csv")
 
-# 相手ポケモンをランダムに選択
-randum_num = rand(max = 3)
-enemy = pokemons[randum_num]
-this_enemy_name = enemy.name
-this_enemy_command = "./csv/#{enemy.command_csv}"
 
 
-# 味方ポケモンは固定
+#############################
+# 味方ポケモン情報
+#############################
+# ポケモン名, コマンドCSVをセットする
 allies = pokemons[3]
 this_allies_name = allies.name
 this_allies_command = "./csv/#{allies.command_csv}"
 
-
-# ポケモンのわざを準備
+# コマンドCSVを読み込む
 allies_command = Command.import(path: this_allies_command)
-enemy_command = Command.import(path: this_enemy_command)
 
-# トレーナーを準備
+# トレーナー名をセットする
 trainer = Trainer.new(TRAINER)
 trainer_name = trainer.tr_name
 
-# 敵のHPを準備
-enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
+# HPをセットする
 allies_hp = "▓▓▓▓▓▓▓▓▓▓"
 
+
+
+
+
+
 #############################
-# ポケモンのエンカウント
+# ポケモンバトル開始
 #############################
-# 敵ポケモンが現れる
+
+#----------------------------
+# 連続バトルのループ
+#----------------------------
+
+# バトルカウンタの初期化
+battle_cnt = 0
+
+until battle_cnt == 3 do
+
+
+#----------------------------
+# 相手ポケモンのセット
+#----------------------------
+
+# ランダム整数をセットする
+randum_num = rand(max = 3)
+
+# ポケモンをランダムに選択する
+enemy = pokemons[randum_num]
+
+# ポケモン名, コマンドCSVをセットする
+this_enemy_name = enemy.name
+this_enemy_command = "./csv/#{enemy.command_csv}"
+
+# コマンドCSVを読み込む
+enemy_command = Command.import(path: this_enemy_command)
+
+# HPをセットする
+enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
+
+# 相手ポケモンの出現
 puts "あっ！野生の #{this_enemy_name} があらわれた！"
 puts "*" * 30
 puts "■ #{this_enemy_name}"
@@ -61,41 +81,26 @@ puts ""
 puts ""
 sleep 1
 
-# こちらのポケモンを繰り出す
-puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
-puts "*" * 30
-puts "■ #{this_allies_name}"
-puts "Lv.5 | HP #{allies_hp}"
-puts "*" * 30
-puts ""
-puts ""
-sleep 1
-
-# binding.pry
-
-#############################
-# ポケモンバトル
-#############################
 
 #----------------------------
-# 連続バトルのループ
+# 味方ポケモンのセット
 #----------------------------
-battle_cnt = 0
-until battle_cnt == 3 do
-  if battle_cnt != 0
-    # 敵ポケモンが現れる
-    enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
-    puts "つづけて野生の #{this_enemy_name} があらわれた！"
-    puts "*" * 30
-    puts "■ #{this_enemy_name}"
-    puts "Lv.5 | HP #{enemy_hp}"
-    puts "*" * 30
-    puts ""
-    puts ""
-    sleep 1
-  end
+
+if battle_cnt == 0
+  # こちらのポケモンを繰り出す
+  puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
+  puts "*" * 30
+  puts "■ #{this_allies_name}"
+  puts "Lv.5 | HP #{allies_hp}"
+  puts "*" * 30
+  puts ""
+  puts ""
+  sleep 1
+end
+
+
 #----------------------------
-# 1バトル
+# 1バトル →→→→→
 #----------------------------
   # どちらかが倒れるまでループ
   until enemy_hp.empty? do
@@ -183,7 +188,7 @@ until battle_cnt == 3 do
     end
   end
 #----------------------------
-# 1バトル: end
+# →→→→→ 1バトル
 #----------------------------
 
 
