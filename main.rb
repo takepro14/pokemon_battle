@@ -47,8 +47,17 @@ allies_hp = "▓▓▓▓▓▓▓▓▓▓"
 
 # バトルカウンタの初期化
 battle_cnt = 0
+wanna_battle_cnt = 0
 
-until battle_cnt == 3 do
+puts "何回対戦しますか？"
+wanna_battle_cnt = gets.to_i
+puts ""
+
+puts "#{wanna_battle_cnt}回の連続バトルを開始します！"
+puts ""
+sleep 1
+
+until battle_cnt == wanna_battle_cnt do
 
 
 #----------------------------
@@ -209,7 +218,7 @@ end
   end
 end
 
-if battle_cnt == 3
+if battle_cnt == wanna_battle_cnt
   puts "#{trainer_name} は 全てのバトルに勝利した！すごい！"
 elsif
   puts "#{trainer_name} は #{battle_cnt + 1}戦目で はいぼく してしまった。"
