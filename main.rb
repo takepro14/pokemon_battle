@@ -50,7 +50,14 @@ battle_cnt = 0
 wanna_battle_cnt = 0
 
 puts "何回対戦しますか？"
-wanna_battle_cnt = gets.to_i
+loop{
+  wanna_battle_cnt = gets.to_i
+  if wanna_battle_cnt != 0 then
+    wanna_battle_cnt
+    break
+  end
+  puts "バトル回数を選択してください。"
+}
 puts ""
 
 puts "#{wanna_battle_cnt}回の連続バトルを開始します！"
