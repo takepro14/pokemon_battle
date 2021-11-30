@@ -55,6 +55,8 @@ puts ""
 
 puts "#{wanna_battle_cnt}回の連続バトルを開始します！"
 puts ""
+puts ""
+puts ""
 sleep 1
 
 until battle_cnt == wanna_battle_cnt do
@@ -82,6 +84,7 @@ enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
 
 # 相手ポケモンの出現
 puts "あっ！野生の #{this_enemy_name} があらわれた！"
+puts ""
 puts "*" * 30
 puts "■ #{this_enemy_name}"
 puts "Lv.5 | HP #{enemy_hp}"
@@ -98,13 +101,13 @@ sleep 1
 if battle_cnt == 0
   # こちらのポケモンを繰り出す
   puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
-  puts "*" * 30
-  puts "■ #{this_allies_name}"
-  puts "Lv.5 | HP #{allies_hp}"
-  puts "*" * 30
-  puts ""
-  puts ""
-  sleep 1
+  # puts "*" * 30
+  # puts "■ #{this_allies_name}"
+  # puts "Lv.5 | HP #{allies_hp}"
+  # puts "*" * 30
+  # puts ""
+  # puts ""
+  # sleep 1
 end
 
 
@@ -115,6 +118,15 @@ end
   until enemy_hp.empty? do
 
   # [自分のターン]
+    # HPの表示
+    puts "★" * battle_cnt
+    puts "*" * 30
+    puts "■ #{this_allies_name}"
+    puts "Lv.5 | HP #{allies_hp}"
+    puts "*" * 30
+    puts ""
+    puts ""
+
     # わざの表示
     puts "<#{this_allies_name} の わざ>"
     allies.display(allies_command)
@@ -181,6 +193,7 @@ end
 
     # 味方ポケモンのHP表示
     if allies_hp.empty?
+      puts "★" * battle_cnt
       puts "*" * 30
       puts "#{this_allies_name}"
       puts "Lv.5 | HP ひんし"
@@ -189,6 +202,7 @@ end
       # 味方ポケモンのHPが0の時、バトル終了
       break
     else
+      puts "★" * battle_cnt
       puts "*" * 30
       puts "#{this_allies_name}"
       puts "Lv.5 | HP #{allies_hp}"
@@ -211,6 +225,7 @@ end
     puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
     battle_cnt += 1
     puts "#{battle_cnt}勝！"
+    puts "★を#{battle_cnt}つ かくとくした！"
     puts ""
     puts ""
     puts ""
