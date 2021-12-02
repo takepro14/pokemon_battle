@@ -90,18 +90,15 @@ enemy_command = Command.import(path: this_enemy_command)
 enemy_hp = "▓▓▓▓▓▓▓▓▓▓"
 
 # 相手ポケモンの出現
-def encount
-  puts "あっ！野生の #{this_enemy_name} があらわれた！"
-  puts ""
-  puts "*" * 30
-  puts "■ #{this_enemy_name}"
-  puts "Lv.5 | HP #{enemy_hp}"
-  puts "*" * 30
-  puts ""
-  puts ""
-  sleep 1
-end
-encount
+puts "あっ！野生の #{this_enemy_name} があらわれた！"
+puts ""
+puts "*" * 30
+puts "■ #{this_enemy_name}"
+puts "Lv.5 | HP #{enemy_hp}"
+puts "*" * 30
+puts ""
+puts ""
+sleep 1
 
 #----------------------------
 # 味方ポケモンのセット
