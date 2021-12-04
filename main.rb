@@ -49,6 +49,9 @@ allies_hp = "▓▓▓▓▓▓▓▓▓▓"
 battle_cnt = 0
 wanna_battle_cnt = 0
 
+# 経験値の初期化
+exp_point = 0
+
 puts "何回対戦しますか？"
 loop{
   wanna_battle_cnt = gets.to_i
@@ -228,7 +231,14 @@ end
     break
   elsif enemy_hp.empty?
     puts "#{this_enemy_name} は たおれた！"
+
+    # 経験値ロジック
     puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
+    exp_point += 5
+    if exp_point == 15
+      puts "#{this_allies_name} は レベルが 6 にあがった！"
+      puts "ハイドロポンプ をおぼえた！"
+    end
     battle_cnt += 1
     puts "#{battle_cnt}勝！"
     puts "★を#{battle_cnt}つ かくとくした！"
