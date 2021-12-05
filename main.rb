@@ -13,7 +13,6 @@ TRAINER = "たけぴょ"
 pokemons = Pokemon.import(path: "./csv/pokemon.csv")
 
 
-
 #############################
 # 味方ポケモン情報
 #############################
@@ -31,9 +30,6 @@ trainer_name = trainer.tr_name
 
 # HPをセットする
 allies_hp = "▓▓▓▓▓▓▓▓▓▓"
-
-
-
 
 
 
@@ -85,6 +81,7 @@ enemy = pokemons[randum_num]
 # ポケモン名, コマンドCSVをセットする
 this_enemy_name = enemy.name
 this_enemy_command = "./csv/#{enemy.command_csv}"
+this_enemy_exp_point = enemy.exp_point.to_i
 
 # コマンドCSVを読み込む
 enemy_command = Command.import(path: this_enemy_command)
@@ -233,11 +230,13 @@ end
     puts "#{this_enemy_name} は たおれた！"
 
     # 経験値ロジック
-    puts "#{this_allies_name} は けいけんちを 5 かくとくした！"
-    exp_point += 5
-    if exp_point == 15
+    puts "#{this_allies_name} は けいけんちを #{this_enemy_exp_point} かくとくした！"
+    exp_point += this_enemy_exp_point
+    if exp_point >= 15
       puts "#{this_allies_name} は レベルが 6 にあがった！"
       puts "ハイドロポンプ をおぼえた！"
+    # カウンタの初期化(毎度メッセージが出ることを抑える)
+      exp_point = 0
     end
     battle_cnt += 1
     puts "#{battle_cnt}勝！"

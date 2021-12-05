@@ -1,5 +1,5 @@
-name,command_csv
-ヒトカゲ,hitokage.csv
-フシギダネ,fushigidane.csv
-イーブイ,iibui.csv
-ゼニガメ,zenigame.csv
+name,command_csv,exp_point
+ヒトカゲ,hitokage.csv,4
+フシギダネ,fushigidane.csv,7
+イーブイ,iibui.csv,5
+ゼニガメ,zenigame.csv,5
