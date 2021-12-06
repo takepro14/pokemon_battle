@@ -13,8 +13,11 @@ class Trainer
       num = gets.to_i
       # binding.pry
       if num != 0 then
-        @num = num
-        break
+        unless num > whose_command.size
+          num
+          @num = num
+          break
+        end
       end
       puts "わざ が せんたくされていません。もういちど せんたくしてください。"
     }
