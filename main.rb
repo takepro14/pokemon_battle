@@ -105,6 +105,7 @@ sleep 1
 #----------------------------
 
 if battle_cnt == 0
+  allies_level = 5
   # こちらのポケモンを繰り出す
   puts "#{trainer_name}「いけっ！ #{this_allies_name}！」"
   # puts "*" * 30
@@ -128,7 +129,8 @@ end
     puts "★" * battle_cnt
     puts "*" * 30
     puts "■ #{this_allies_name}"
-    puts "Lv.5 | HP #{allies_hp}"
+    puts "Lv.#{allies_level} | HP #{allies_hp}"
+    puts "|" * exp_point
     puts "*" * 30
     puts ""
     puts ""
@@ -163,7 +165,7 @@ end
     if enemy_hp.empty?
       puts "*" * 30
       puts "■ #{this_enemy_name}"
-      puts "Lv.5 | HP ひんし"
+      puts "Lv.#{allies_level} | HP ひんし"
       puts "*" * 30
       puts ""
       puts ""
@@ -233,7 +235,8 @@ end
     puts "#{this_allies_name} は けいけんちを #{this_enemy_exp_point} かくとくした！"
     exp_point += this_enemy_exp_point
     if exp_point >= 15
-      puts "#{this_allies_name} は レベルが 6 にあがった！"
+      allies_level += 1
+      puts "#{this_allies_name} は レベルが #{allies_level} にあがった！"
       puts "ハイドロポンプ をおぼえた！"
     # カウンタの初期化(毎度メッセージが出ることを抑える)
       exp_point = 0
