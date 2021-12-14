@@ -23,6 +23,7 @@ this_allies_command = "./csv/#{allies.command_csv}"
 
 # コマンドCSVを読み込む
 allies_command = Command.import(path: this_allies_command)
+# binding.pry
 
 # トレーナー名をセットする
 trainer = Trainer.new(TRAINER)
