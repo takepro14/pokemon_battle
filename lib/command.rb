@@ -2,12 +2,13 @@
 # require "csv"
 
 class Command
-  attr_reader :waza, :damage, :chomp
+  attr_reader :waza, :damage, :chomp, :unlocked
 
-  def initialize(waza:, damage:, chomp:)
+  def initialize(waza:, damage:, chomp:, unlocked:)
     @waza = waza
     @damage = damage
     @chomp = chomp
+    @unlocked = unlocked
   end
 
   def self.import(path:)
@@ -15,7 +16,8 @@ class Command
         Command.new(
           waza: row["waza"],
           damage: row["damage"].to_i,
-          chomp: row["chomp"]
+          chomp: row["chomp"],
+          unlocked: row["unlocked"]
         )
       end
   end
