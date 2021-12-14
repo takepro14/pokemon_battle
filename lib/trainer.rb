@@ -13,10 +13,13 @@ class Trainer
       num = gets.to_i
       # binding.pry
       if num != 0 then
+        # 選択したコマンド>コマンドの数でない かつ unlockedがNではないなら
         unless num > whose_command.size
-          num
-          @num = num
-          break
+          unless whose_command[num - 1].unlocked == "N"
+            num
+            @num = num
+            break
+          end
         end
       end
       puts "わざ が せんたくされていません。もういちど せんたくしてください。"
