@@ -20,6 +20,7 @@ pokemons = Pokemon.import(path: "./csv/pokemon.csv")
 allies = pokemons[3]
 this_allies_name = allies.name
 this_allies_command = "./csv/#{allies.command_csv}"
+this_allies_speed = allies.speed.to_i
 
 # コマンドCSVを読み込む
 allies_command = Command.import(path: this_allies_command)
@@ -83,6 +84,7 @@ enemy = pokemons[randum_num]
 this_enemy_name = enemy.name
 this_enemy_command = "./csv/#{enemy.command_csv}"
 this_enemy_exp_point = enemy.exp_point.to_i
+this_enemy_speed = enemy.speed.to_i
 
 # コマンドCSVを読み込む
 enemy_command = Command.import(path: this_enemy_command)
@@ -122,7 +124,7 @@ end
 #----------------------------
 # 1バトル →→→→→
 #----------------------------
-  # どちらかが倒れるまでループ
+# どちらかが倒れるまでループ
   until enemy_hp.empty? do
 
   # [自分のターン]
@@ -147,82 +149,96 @@ end
     puts ""
     sleep 1
 
-    # わざを繰り出す
-    puts "#{trainer_name}「#{this_allies_name}、 #{decide_a_command.waza}！」"
-    sleep 1
+    # ターンのセット
+    def this_allies_turn
+      # わざを繰り出す
+      puts "#{trainer_name}「#{this_allies_name}、 #{decide_a_command.waza}！」"
+      sleep 1
 
-    puts "#{this_enemy_name} に #{decide_a_command.damage} のダメージ！"
+      puts "#{this_enemy_name} に #{decide_a_command.damage} のダメージ！"
 
-    # オーバーキルになる場合の調整
-    if enemy_hp.length < decide_a_command.chomp.length
-      enemy_hp = enemy_hp.chomp(enemy_hp)
-    else
-      enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
-    end
-    puts ""
-    sleep 1
+      # オーバーキルになる場合の調整
+      if enemy_hp.length < decide_a_command.chomp.length
+        enemy_hp = enemy_hp.chomp(enemy_hp)
+      else
+        enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
+      end
+      puts ""
+      sleep 1
 
-    # 相手ポケモンのHP表示
-    if enemy_hp.empty?
-      puts "*" * 30
-      puts "■ #{this_enemy_name}"
-      puts "Lv.#{allies_level} | HP ひんし"
-      puts "*" * 30
-      puts ""
-      puts ""
-      # 相手ポケモンのHPが0の時、バトル終了
-      break
-    else
-      puts "*" * 30
-      puts "■ #{this_enemy_name}"
-      puts "Lv.5 | HP #{enemy_hp}"
-      puts "*" * 30
-      puts ""
-      puts ""
+      # 相手ポケモンのHP表示
+      if enemy_hp.empty?
+        puts "*" * 30
+        puts "■ #{this_enemy_name}"
+        puts "Lv.#{allies_level} | HP ひんし"
+        puts "*" * 30
+        puts ""
+        puts ""
+        # 相手ポケモンのHPが0の時、バトル終了
+        return
+      else
+        puts "*" * 30
+        puts "■ #{this_enemy_name}"
+        puts "Lv.5 | HP #{enemy_hp}"
+        puts "*" * 30
+        puts ""
+        puts ""
+      end
     end
 
   # [相手のターン]
-    # わざの選択(ランダム)
-    decide_e_command = enemy_command.sample
+    def this_enemy_turn
+      # わざの選択(ランダム)
+      decide_e_command = enemy_command.sample
 
-    # わざを繰り出す
-    puts "野生の #{this_enemy_name} の、 #{decide_e_command.waza}！"
-    puts ""
-    sleep 1
-    puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
+      # わざを繰り出す
+      puts "野生の #{this_enemy_name} の、 #{decide_e_command.waza}！"
+      puts ""
+      sleep 1
+      puts "#{this_allies_name} に #{decide_e_command.damage} のダメージ！"
 
-    # オーバーキルになる場合の調整
-    if allies_hp.length < decide_e_command.chomp.length
-      allies_hp = allies_hp.chomp(allies_hp)
-    else
-      allies_hp = allies_hp.chomp(decide_e_command.chomp)
+      # オーバーキルになる場合の調整
+      if allies_hp.length < decide_e_command.chomp.length
+        allies_hp = allies_hp.chomp(allies_hp)
+      else
+        allies_hp = allies_hp.chomp(decide_e_command.chomp)
+      end
+      puts ""
+      sleep 1
+
+      # 味方ポケモンのHP表示
+      if allies_hp.empty?
+        puts "★" * battle_cnt
+        puts "*" * 30
+        puts "#{this_allies_name}"
+        puts "Lv.5 | HP ひんし"
+        puts "*" * 30
+        puts ""
+        # 味方ポケモンのHPが0の時、バトル終了
+        return
+      else
+        puts "★" * battle_cnt
+        puts "*" * 30
+        puts "#{this_allies_name}"
+        puts "Lv.5 | HP #{allies_hp}"
+        puts "*" * 30
+        puts ""
+      end
     end
-    puts ""
-    sleep 1
 
-    # 味方ポケモンのHP表示
-    if allies_hp.empty?
-      puts "★" * battle_cnt
-      puts "*" * 30
-      puts "#{this_allies_name}"
-      puts "Lv.5 | HP ひんし"
-      puts "*" * 30
-      puts ""
-      # 味方ポケモンのHPが0の時、バトル終了
-      break
+    ### すばやさ判定しつつバトル
+    if this_allies_speed >= this_enemy_speed
+      this_allies_turn
+      this_enemy_turn
     else
-      puts "★" * battle_cnt
-      puts "*" * 30
-      puts "#{this_allies_name}"
-      puts "Lv.5 | HP #{allies_hp}"
-      puts "*" * 30
-      puts ""
+      this_allies_turn
+      this_enemy_turn
     end
   end
+
 #----------------------------
 # →→→→→ 1バトル
 #----------------------------
-
 
   # バトル終了時
   if allies_hp.empty?
@@ -252,9 +268,8 @@ end
   end
 end
 
-if battle_cnt == wanna_battle_cnt
-  puts "#{trainer_name} は 全てのバトルに勝利した！すごい！"
-elsif
-  puts "#{trainer_name} は #{battle_cnt + 1}戦目で はいぼく してしまった。"
-end
-
+  if battle_cnt == wanna_battle_cnt
+    puts "#{trainer_name} は 全てのバトルに勝利した！すごい！"
+  elsif
+    puts "#{trainer_name} は #{battle_cnt + 1}戦目で はいぼく してしまった。"
+  end
