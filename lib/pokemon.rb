@@ -2,12 +2,13 @@ require_relative "command"
 # require "csv"
 
 class Pokemon
-  attr_reader :name, :command_csv, :exp_point
+  attr_reader :name, :command_csv, :exp_point, :speed
 
-  def initialize(name:, command_csv:, exp_point:)
+  def initialize(name:, command_csv:, exp_point:, speed:)
     @name = name
     @command_csv = command_csv
     @exp_point = exp_point
+    @speed = speed
   end
 
   def self.import(path:)
@@ -15,7 +16,8 @@ class Pokemon
       Pokemon.new(
         name: row["name"],
         command_csv: row["command_csv"],
-        exp_point: row["exp_point"]
+        exp_point: row["exp_point"],
+        speed: row["speed"]
       )
     end
   end
