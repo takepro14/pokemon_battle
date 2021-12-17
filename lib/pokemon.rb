@@ -2,12 +2,13 @@ require_relative "command"
 # require "csv"
 
 class Pokemon
-  attr_reader :name, :command_csv, :exp_point, :speed
+  attr_reader :name, :command_csv, :exp_point, :hp, :speed
 
-  def initialize(name:, command_csv:, exp_point:, speed:)
+  def initialize(name:, command_csv:, exp_point:, hp:, speed:)
     @name = name
     @command_csv = command_csv
     @exp_point = exp_point
+    @hp = hp
     @speed = speed
   end
 
@@ -17,6 +18,7 @@ class Pokemon
         name: row["name"],
         command_csv: row["command_csv"],
         exp_point: row["exp_point"],
+        hp: row["hp"],
         speed: row["speed"]
       )
     end
@@ -28,5 +30,10 @@ class Pokemon
         puts "#{index}. #{command.waza} / いりょく: #{command.damage} "
       end
     end
+  end
+
+  # ポケモン個別のコマンドCSVファイルを読み込む
+  def set_command(csv_path)
+    Command.import(path: csv_path)
   end
 end
