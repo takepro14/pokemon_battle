@@ -1,0 +1,4 @@
+name,command_csv,exp_point,hp,speed
+ヒトカゲ,hitokage.csv,4,10,10
+フシギダネ,fushigidane.csv,7,12,15
+イーブイ,iibui.csv,5,8,30
