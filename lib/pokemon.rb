@@ -12,6 +12,7 @@ class Pokemon
     @speed = speed
   end
 
+  # ポケモンのステータス情報をCSVからインポート
   def self.import(path:)
     CSV.read(path, headers: true).map do |row|
       Pokemon.new(
@@ -24,16 +25,30 @@ class Pokemon
     end
   end
 
-  def display(whose_command)
-    whose_command.each.with_index(1) do |command, index|
+  # ポケモンのコマンド情報をCSVからインポート
+  def set_command(csv_path)
+    Command.import(path: csv_path)
+  end
+
+  # ポケモンのステータスを表示
+  def display_status(pokemon)
+    # puts "★" * battle_cnt
+    puts "*" * 30
+    puts "■ #{pokemon.name}"
+    puts "Lv.5 | HP #{pokemon.hp}"
+    puts "|" * 10
+    puts "*" * 30
+    puts ""
+    puts ""
+  end
+
+  # ポケモンのわざを表示
+  def display_command(pokemon, command)
+    puts "<#{pokemon.name} の わざ>"
+    command.each.with_index(1) do |command, index|
       if command.unlocked == "Y"
         puts "#{index}. #{command.waza} / いりょく: #{command.damage} "
       end
     end
-  end
-
-  # ポケモン個別のコマンドCSVファイルを読み込む
-  def set_command(csv_path)
-    Command.import(path: csv_path)
   end
 end
