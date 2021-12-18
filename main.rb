@@ -41,31 +41,17 @@ trainer_name = trainer.tr_name
 # 連続バトルのループ
 
 # バトルカウンタの初期化
-battle_cnt = 0
-wanna_battle_cnt = 0
+# battle_cnt = 0
+# wanna_battle_cnt = 0
 
 # 経験値の初期化
-exp_point = 0
+# exp_point = 0
 
-puts "何回対戦しますか？"
-loop{
-  wanna_battle_cnt = gets.to_i
-  if wanna_battle_cnt != 0 then
-    wanna_battle_cnt
-    break
-  end
-  puts "バトル回数を選択してください。"
-}
-puts ""
 
-puts "#{wanna_battle_cnt}回の連続バトルを開始します！"
-puts ""
-puts ""
-puts ""
-sleep 0.1
+# バトルインスタンスの生成
+battle = Battle.new
 
-until battle_cnt == wanna_battle_cnt do
-
+until battle.battle_cnt == battle.wanna_battle_cnt do
 
 #----------------------------
 # 相手ポケモンのセット
@@ -80,26 +66,14 @@ enemy_exp_point = enemy.exp_point.to_i
 enemy_speed = enemy.speed.to_i
 enemy_hp = "▓" * enemy.hp.to_i
 
+
 # 相手ポケモンの出現
-battle = Battle.new
-battle.encount(enemy)
+battle.appear_enemy(enemy)
 
-#----------------------------
-# 味方ポケモンのセット
-#----------------------------
+# 味方ポケモンの召喚
+battle.appear_allies(allies_first, trainer)
 
-if battle_cnt == 0
-  allies_level = 5
-  # こちらのポケモンを繰り出す
-  puts "#{trainer_name}「いけっ！ #{allies_name}！」"
-  # puts "*" * 30
-  # puts "■ #{allies_name}"
-  # puts "Lv.5 | HP #{allies_hp}"
-  # puts "*" * 30
-  # puts ""
-  # puts ""
-  # sleep 0.1
-end
+
 
 
 #----------------------------
@@ -109,26 +83,14 @@ end
   until enemy_hp.empty? do
 
   # [自分のターン]
-    # HPの表示
-    puts "★" * battle_cnt
-    puts "*" * 30
-    puts "■ #{allies_name}"
-    puts "Lv.#{allies_level} | HP #{allies_hp}"
-    puts "|" * exp_point
-    puts "*" * 30
-    puts ""
-    puts ""
+    # ポケモン：ステータスの表示
+    allies_first.display_status(allies_first)
 
-    # わざの表示
-    puts "<#{allies_name} の わざ>"
-    allies_first.display(allies_command)
-    puts ""
+    # ポケモン：わざの表示
+    allies_first.display_command(allies_first, allies_command)
 
-    # わざの選択
-    print "#{allies_name} はどうする？ > "
-    decide_a_command = trainer.choice_command(allies_command)
-    puts ""
-    sleep 0.1
+    # トレーナー：わざの選択
+    decide_a_command = trainer.choice_command(allies_first, allies_command)
 
     # わざを繰り出す
     puts "#{trainer_name}「#{allies_name}、 #{decide_a_command.waza}！」"

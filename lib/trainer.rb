@@ -7,7 +7,8 @@ class Trainer
     @tr_name = tr_name
   end
 
-  def choice_command(whose_command)
+  def choice_command(pokemon, whose_command)
+    print "#{pokemon.name} はどうする？ > "
     # 入力を必須にする
     loop{
       num = gets.to_i
@@ -25,6 +26,8 @@ class Trainer
       puts "わざ が せんたくされていません。もういちど せんたくしてください。"
     }
     whose_command[@num - 1]
+    puts ""
+    sleep 0.1
   end
 
 
