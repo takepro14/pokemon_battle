@@ -40,11 +40,18 @@ attr_reader :battle_cnt, :wanna_battle_cnt
   end
 
   # 味方ポケモンを召喚
-  def appear_allies(allies_first, trainer)
+  def put_ally(pokemon, trainer)
     if @battle_cnt == 0
-      allies_level = 5
       # こちらのポケモンを繰り出す
-      puts "#{trainer.tr_name}「いけっ！ #{allies_first.name}！」"
+      puts "#{trainer.name}「いけっ！ #{pokemon.name}！」"
+    end
+  end
+
+  def battle_end(trainer)
+    if @battle_cnt == @wanna_battle_cnt
+      puts "#{trainer.name} は 全てのバトルに勝利した！すごい！"
+    elsif
+      puts "#{trainer.name} は #{@battle_cnt + 1}戦目で はいぼく してしまった。"
     end
   end
 end

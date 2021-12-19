@@ -10,89 +10,71 @@ TRAINER = "たけぴょ"
 
 
 #----------------------------
-# ポケモンの生成, コマンドCSVセット
+# 各種変数のセット
 #----------------------------
+# ポケモンの基本情報をCSVからインポート
 enemys = Pokemon.import(path: "./csv/enemys.csv")
 allies = Pokemon.import(path: "./csv/allies.csv")
-# binding.pry
 
-
-#----------------------------
-# 味方ポケモンセット
-#----------------------------
-allies_first = allies[0]
+# 手持ちの先頭ポケモンをセット
+ally = allies[0]
 
 # パラメータのセット
-allies_command = allies_first.set_command("./csv/#{allies_first.command_csv}")
-allies_name = allies_first.name
-allies_speed = allies_first.speed.to_i
-allies_hp = "▓" * allies_first.hp.to_i
+allies_command = ally.set_command("./csv/#{ally.command_csv}")
+allies_name = ally.name
+allies_speed = ally.speed.to_i
+allies_hp = "▓" * ally.hp.to_i
 
 # トレーナー名をセットする
 trainer = Trainer.new(TRAINER)
-trainer_name = trainer.tr_name
-
+trainer_name = trainer.name
 
 
 #----------------------------
-# ポケモンバトル開始
+# ポケモンバトル: 指定回数ループ
 #----------------------------
-
-# 連続バトルのループ
-
-# バトルカウンタの初期化
-# battle_cnt = 0
-# wanna_battle_cnt = 0
-
-# 経験値の初期化
-# exp_point = 0
-
-
 # バトルインスタンスの生成
 battle = Battle.new
 
+# 指定したバトル回数になるまでバトルを繰り返す
 until battle.battle_cnt == battle.wanna_battle_cnt do
 
-#----------------------------
-# 相手ポケモンのセット
-#----------------------------
-# ポケモンをランダムに選択する
-enemy =  enemys[rand(max = enemys.length - 1)]
+  # ポケモンをランダムに選択する
+  enemy =  enemys[rand(max = enemys.length - 1)]
 
-# パラメータのセット
-enemy_command = enemy.set_command("./csv/#{enemy.command_csv}")
-enemy_name = enemy.name
-enemy_exp_point = enemy.exp_point.to_i
-enemy_speed = enemy.speed.to_i
-enemy_hp = "▓" * enemy.hp.to_i
+  # パラメータのセット
+  enemy_command = enemy.set_command("./csv/#{enemy.command_csv}")
+  enemy_name = enemy.name
+  enemy_exp_point = enemy.exp_point.to_i
+  enemy_speed = enemy.speed.to_i
+  enemy_hp = "▓" * enemy.hp.to_i
 
 
-# 相手ポケモンの出現
-battle.appear_enemy(enemy)
+  # 相手ポケモンの出現
+  battle.appear_enemy(enemy)
 
-# 味方ポケモンの召喚
-battle.appear_allies(allies_first, trainer)
-
-
+  # 味方ポケモンの召喚
+  battle.put_ally(ally, trainer)
 
 
 #----------------------------
-# 1バトル →→→→→
+# ポケモンバトル: 1バトル
 #----------------------------
 # どちらかが倒れるまでループ
   until enemy_hp.empty? do
 
   # [自分のターン]
     # ポケモン：ステータスの表示
-    allies_first.display_status(allies_first)
+    ally.display_status(ally)
 
     # ポケモン：わざの表示
-    allies_first.display_command(allies_first, allies_command)
+    ally.display_command(ally, allies_command)
 
     # トレーナー：わざの選択
-    decide_a_command = trainer.choice_command(allies_first, allies_command)
+    decide_a_command = trainer.choice_command(ally, allies_command)
 
     # わざを繰り出す
+    # binding.pry
     puts "#{trainer_name}「#{allies_name}、 #{decide_a_command.waza}！」"
     sleep 0.1
 
@@ -108,23 +90,25 @@ battle.appear_allies(allies_first, trainer)
     sleep 0.1
 
     # 相手ポケモンのHP表示
-    if enemy_hp.empty?
-      puts "*" * 30
-      puts "■ #{enemy_name}"
-      puts "Lv.#{allies_level} | HP ひんし"
-      puts "*" * 30
-      puts ""
-      puts ""
-      # 相手ポケモンのHPが0の時、バトル終了
-      break
-    else
-      puts "*" * 30
-      puts "■ #{enemy_name}"
-      puts "Lv.5 | HP #{enemy_hp}"
-      puts "*" * 30
-      puts ""
-      puts ""
-    end
+    enemy.display_status(enemy)
+
+    # if enemy_hp.empty?
+    #   puts "*" * 30
+    #   puts "■ #{enemy.name}"
+    #   puts "Lv.#{ally.level} | HP ひんし"
+    #   puts "*" * 30
+    #   puts ""
+    #   puts ""
+    #   # 相手ポケモンのHPが0の時、バトル終了
+    #   break
+    # else
+    #   puts "*" * 30
+    #   puts "■ #{enemy_name}"
+    #   puts "Lv.5 | HP #{enemy_hp}"
+    #   puts "*" * 30
+    #   puts ""
+    #   puts ""
+    # end
 
   # [相手のターン]
     # わざの選択(ランダム)
@@ -146,23 +130,24 @@ battle.appear_allies(allies_first, trainer)
     sleep 0.1
 
     # 味方ポケモンのHP表示
-    if allies_hp.empty?
-      puts "★" * battle_cnt
-      puts "*" * 30
-      puts "#{allies_name}"
-      puts "Lv.5 | HP ひんし"
-      puts "*" * 30
-      puts ""
-      # 味方ポケモンのHPが0の時、バトル終了
-      break
-    else
-      puts "★" * battle_cnt
-      puts "*" * 30
-      puts "#{allies_name}"
-      puts "Lv.5 | HP #{allies_hp}"
-      puts "*" * 30
-      puts ""
-    end
+    ally.display_status(ally)
+    # if allies_hp.empty?
+    #   puts "★" * battle_cnt
+    #   puts "*" * 30
+    #   puts "#{allies_name}"
+    #   puts "Lv.5 | HP ひんし"
+    #   puts "*" * 30
+    #   puts ""
+    #   # 味方ポケモンのHPが0の時、バトル終了
+    #   break
+    # else
+    #   puts "★" * battle_cnt
+    #   puts "*" * 30
+    #   puts "#{allies_name}"
+    #   puts "Lv.5 | HP #{allies_hp}"
+    #   puts "*" * 30
+    #   puts ""
+    # end
   end
 
 #----------------------------
@@ -178,14 +163,14 @@ battle.appear_allies(allies_first, trainer)
     puts "#{enemy_name} は たおれた！"
 
     # 経験値ロジック
-    puts "#{allies_name} は けいけんちを #{enemy_exp_point} かくとくした！"
-    exp_point += enemy_exp_point
-    if exp_point >= 15
-      allies_level += 1
-      puts "#{allies_name} は レベルが #{allies_level} にあがった！"
+    puts "#{allies_name} は けいけんちを #{enemy.exp_point} かくとくした！"
+    ally.exp_point += enemy.exp_point
+    if ally.exp_point >= 15
+      ally.level += 1
+      puts "#{ally.name} は レベルが #{ally.level} にあがった！"
       puts "ハイドロポンプ をおぼえた！"
     # カウンタの初期化(毎度メッセージが出ることを抑える)
-      exp_point = 0
+      ally.exp_point = 0
     end
     battle_cnt += 1
     puts "#{battle_cnt}勝！"
@@ -197,8 +182,4 @@ battle.appear_allies(allies_first, trainer)
   end
 end
 
-  if battle_cnt == wanna_battle_cnt
-    puts "#{trainer_name} は 全てのバトルに勝利した！すごい！"
-  elsif
-    puts "#{trainer_name} は #{battle_cnt + 1}戦目で はいぼく してしまった。"
-  end
+battle.battle_end(trainer)

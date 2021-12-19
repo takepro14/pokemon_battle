@@ -1,10 +1,10 @@
 require_relative "pokemon"
 
 class Trainer
-  attr_reader :tr_name
+  attr_reader :name
 
-  def initialize(tr_name)
-    @tr_name = tr_name
+  def initialize(name)
+    @name = name
   end
 
   def choice_command(pokemon, whose_command)
@@ -26,8 +26,6 @@ class Trainer
       puts "わざ が せんたくされていません。もういちど せんたくしてください。"
     }
     whose_command[@num - 1]
-    puts ""
-    sleep 0.1
   end
 
 

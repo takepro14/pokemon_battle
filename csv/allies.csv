@@ -1,2 +1,2 @@
-name,command_csv,exp_point,hp,speed
-ゼニガメ,zenigame.csv,5,10,20
+name,command_csv,exp_point,level,hp,speed
+ゼニガメ,zenigame.csv,5,5,10,20
