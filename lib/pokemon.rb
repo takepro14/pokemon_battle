@@ -33,14 +33,14 @@ class Pokemon
   end
 
   # ポケモンのステータスを表示
-  def display_status(pokemon)
+  def display_status(pokemon, hp)
     # puts "★" * battle_cnt
     puts "*" * 30
     puts "■ #{pokemon.name}"
       if pokemon.hp.empty?
         puts "Lv.#{pokemon.level} | HP ひんし"
       else
-        puts "Lv.#{pokemon.level} | HP #{pokemon.hp}"
+        puts "Lv.#{pokemon.level} | HP #{hp}"
       end
     puts "|" * 10
     puts "*" * 30

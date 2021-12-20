@@ -20,10 +20,10 @@ allies = Pokemon.import(path: "./csv/allies.csv")
 ally = allies[0]
 
 # パラメータのセット
-allies_command = ally.set_command("./csv/#{ally.command_csv}")
-allies_name = ally.name
-allies_speed = ally.speed.to_i
-allies_hp = "▓" * ally.hp.to_i
+ally_command = ally.set_command("./csv/#{ally.command_csv}")
+ally_name = ally.name
+ally_speed = ally.speed.to_i
+ally_hp = "▓" * ally.hp.to_i
 
 # トレーナー名をセットする
 trainer = Trainer.new(TRAINER)
@@ -64,51 +64,22 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
   until enemy_hp.empty? do
 
   # [自分のターン]
-    # ポケモン：ステータスの表示
-    ally.display_status(ally)
+    # [pokemon] ポケモン：ステータスの表示
+    ally.display_status(ally, ally_hp)
 
-    # ポケモン：わざの表示
-    ally.display_command(ally, allies_command)
+    # [pokemon] ポケモン：わざの表示
+    ally.display_command(ally, ally_command)
 
-    # トレーナー：わざの選択
-    decide_a_command = trainer.choice_command(ally, allies_command)
+    # [trainer] トレーナー：わざの選択
+    decide_a_command = trainer.choice_command(ally, ally_command, trainer)
 
-    # わざを繰り出す
-    # binding.pry
-    puts "#{trainer_name}「#{allies_name}、 #{decide_a_command.waza}！」"
-    sleep 0.1
-
-    puts "#{enemy_name} に #{decide_a_command.damage} のダメージ！"
-
-    # オーバーキルになる場合の調整
-    if enemy_hp.length < decide_a_command.chomp.length
-      enemy_hp = enemy_hp.chomp(enemy_hp)
-    else
-      enemy_hp = enemy_hp.chomp(decide_a_command.chomp)
-    end
+    # [battle] ダメージ計算
+    enemy_hp = battle.calc_damage(enemy, decide_a_command, enemy_hp)
     puts ""
     sleep 0.1
 
     # 相手ポケモンのHP表示
-    enemy.display_status(enemy)
-
-    # if enemy_hp.empty?
-    #   puts "*" * 30
-    #   puts "■ #{enemy.name}"
-    #   puts "Lv.#{ally.level} | HP ひんし"
-    #   puts "*" * 30
-    #   puts ""
-    #   puts ""
-    #   # 相手ポケモンのHPが0の時、バトル終了
-    #   break
-    # else
-    #   puts "*" * 30
-    #   puts "■ #{enemy_name}"
-    #   puts "Lv.5 | HP #{enemy_hp}"
-    #   puts "*" * 30
-    #   puts ""
-    #   puts ""
-    # end
+    enemy.display_status(enemy, enemy_hp)
 
   # [相手のターン]
     # わざの選択(ランダム)
@@ -118,23 +89,23 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
     puts "野生の #{enemy_name} の、 #{decide_e_command.waza}！"
     puts ""
     sleep 0.1
-    puts "#{allies_name} に #{decide_e_command.damage} のダメージ！"
+    puts "#{ally_name} に #{decide_e_command.damage} のダメージ！"
 
     # オーバーキルになる場合の調整
-    if allies_hp.length < decide_e_command.chomp.length
-      allies_hp = allies_hp.chomp(allies_hp)
-    else
-      allies_hp = allies_hp.chomp(decide_e_command.chomp)
-    end
+    # if ally_hp.length < decide_e_command.chomp.length
+    #   ally_hp = ally_hp.chomp(ally_hp)
+    # else
+    #   ally_hp = ally_hp.chomp(decide_e_command.chomp)
+    # end
     puts ""
     sleep 0.1
 
     # 味方ポケモンのHP表示
     ally.display_status(ally)
-    # if allies_hp.empty?
+    # if ally_hp.empty?
     #   puts "★" * battle_cnt
     #   puts "*" * 30
-    #   puts "#{allies_name}"
+    #   puts "#{ally_name}"
     #   puts "Lv.5 | HP ひんし"
     #   puts "*" * 30
     #   puts ""
@@ -143,8 +114,8 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
     # else
     #   puts "★" * battle_cnt
     #   puts "*" * 30
-    #   puts "#{allies_name}"
-    #   puts "Lv.5 | HP #{allies_hp}"
+    #   puts "#{ally_name}"
+    #   puts "Lv.5 | HP #{ally_hp}"
     #   puts "*" * 30
     #   puts ""
     # end
@@ -155,15 +126,15 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
 #----------------------------
 
   # バトル終了時
-  if allies_hp.empty?
-    puts "#{allies_name} は たおれた！"
+  if ally_hp.empty?
+    puts "#{ally_name} は たおれた！"
     puts "#{trainer_name} は めのまえ が まっしろになった。"
     break
   elsif enemy_hp.empty?
     puts "#{enemy_name} は たおれた！"
 
     # 経験値ロジック
-    puts "#{allies_name} は けいけんちを #{enemy.exp_point} かくとくした！"
+    puts "#{ally_name} は けいけんちを #{enemy.exp_point} かくとくした！"
     ally.exp_point += enemy.exp_point
     if ally.exp_point >= 15
       ally.level += 1

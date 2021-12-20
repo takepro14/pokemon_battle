@@ -7,7 +7,7 @@ class Trainer
     @name = name
   end
 
-  def choice_command(pokemon, whose_command)
+  def choice_command(pokemon, commands, trainer)
     print "#{pokemon.name} はどうする？ > "
     # 入力を必須にする
     loop{
@@ -15,8 +15,8 @@ class Trainer
       # binding.pry
       if num != 0 then
         # 選択したコマンド>コマンドの数でない かつ unlockedがNではないなら
-        unless num > whose_command.size
-          unless whose_command[num - 1].unlocked == "N"
+        unless num > commands.size
+          unless commands[num - 1].unlocked == "N"
             num
             @num = num
             break
@@ -25,7 +25,10 @@ class Trainer
       end
       puts "わざ が せんたくされていません。もういちど せんたくしてください。"
     }
-    whose_command[@num - 1]
+    sleep 0.5
+    puts ""
+    puts "#{trainer.name}「#{pokemon.name}、 #{commands[@num - 1].waza}！」"
+    commands[@num - 1]
   end
 
 

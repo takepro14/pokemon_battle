@@ -47,6 +47,18 @@ attr_reader :battle_cnt, :wanna_battle_cnt
     end
   end
 
+  def calc_damage(pokemon, command, hp)
+    puts "#{pokemon.name} に #{command.damage} のダメージ！"
+    # binding.pry
+    # 現在のHPよりもわざで与えるダメージの方が多い時(オーバーキルになる場合)
+    if hp.length < command.chomp.length
+      hp = hp.chomp(hp)
+    else
+      hp = hp.chomp(command.chomp)
+    end
+  end
+
+
   def battle_end(trainer)
     if @battle_cnt == @wanna_battle_cnt
       puts "#{trainer.name} は 全てのバトルに勝利した！すごい！"
