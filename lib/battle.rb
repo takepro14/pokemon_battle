@@ -27,12 +27,12 @@ attr_reader :battle_cnt, :wanna_battle_cnt
   end
 
   # 敵ポケモンの出現
-  def appear_enemy(enemy)
-    puts "あっ！野生の #{enemy.name} があらわれた！"
+  def appear_enemy(pokemon_name, pokemon_hp)
+    puts "あっ！野生の #{pokemon_name} があらわれた！"
     puts ""
     puts "*" * 30
-    puts "■ #{enemy.name}"
-    puts "Lv.5 | HP #{"▓" * enemy.hp.to_i}"
+    puts "■ #{pokemon_name}"
+    puts "Lv.5 | HP #{pokemon_hp}"
     puts "*" * 30
     puts ""
     puts ""
@@ -40,24 +40,52 @@ attr_reader :battle_cnt, :wanna_battle_cnt
   end
 
   # 味方ポケモンを召喚
-  def put_ally(pokemon, trainer)
+  def put_ally(pokemon_name, trainer_name)
     if @battle_cnt == 0
       # こちらのポケモンを繰り出す
-      puts "#{trainer.name}「いけっ！ #{pokemon.name}！」"
+      puts "#{trainer_name}「いけっ！ #{pokemon_name}！」"
     end
   end
 
-  def calc_damage(pokemon, command, hp)
-    puts "#{pokemon.name} に #{command.damage} のダメージ！"
+  def calc_damage(pokemon_name, command, pokemon_hp)
+    puts "#{pokemon_name} に #{command.damage} のダメージ！"
     # binding.pry
     # 現在のHPよりもわざで与えるダメージの方が多い時(オーバーキルになる場合)
-    if hp.length < command.chomp.length
-      hp = hp.chomp(hp)
+    if pokemon_hp.length < command.chomp.length
+      pokemon_hp = pokemon_hp.chomp(pokemon_hp)
     else
-      hp = hp.chomp(command.chomp)
+      pokemon_hp = pokemon_hp.chomp(command.chomp)
     end
   end
 
+  def display_reward()
+    # バトル終了時
+    if ally_hp.empty?
+      puts "#{ally_name} は たおれた！"
+      puts "#{trainer_name} は めのまえ が まっしろになった。"
+      break
+    elsif enemy_hp.empty?
+      puts "#{enemy_name} は たおれた！"
+
+      # 経験値ロジック
+      puts "#{ally_name} は けいけんちを #{enemy.exp_point} かくとくした！"
+      ally.exp_point += enemy.exp_point
+      if ally.exp_point >= 15
+        ally.level += 1
+        puts "#{ally.name} は レベルが #{ally.level} にあがった！"
+        puts "ハイドロポンプ をおぼえた！"
+      # カウンタの初期化(毎度メッセージが出ることを抑える)
+        ally.exp_point = 0
+      end
+      battle_cnt += 1
+      puts "#{battle_cnt}勝！"
+      puts "★を#{battle_cnt}つ かくとくした！"
+      puts ""
+      puts ""
+      puts ""
+      sleep 0.1
+    end
+  end
 
   def battle_end(trainer)
     if @battle_cnt == @wanna_battle_cnt

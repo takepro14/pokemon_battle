@@ -33,14 +33,15 @@ class Pokemon
   end
 
   # ポケモンのステータスを表示
-  def display_status(pokemon, hp)
+  def display_status(pokemon_name, pokemon_level, pokemon_hp)
     # puts "★" * battle_cnt
     puts "*" * 30
-    puts "■ #{pokemon.name}"
-      if pokemon.hp.empty?
-        puts "Lv.#{pokemon.level} | HP ひんし"
+    puts "■ #{pokemon_name}"
+      # binding.pry
+      if pokemon_hp.empty?
+        puts "Lv.#{pokemon_level} | HP ひんし"
       else
-        puts "Lv.#{pokemon.level} | HP #{hp}"
+        puts "Lv.#{pokemon_level} | HP #{pokemom_hp}"
       end
     puts "|" * 10
     puts "*" * 30
@@ -49,9 +50,9 @@ class Pokemon
   end
 
   # ポケモンのわざを表示
-  def display_command(pokemon, command)
-    puts "<#{pokemon.name} の わざ>"
-    command.each.with_index(1) do |command, index|
+  def display_command(pokemon_name, commands)
+    puts "<#{pokemon_name} の わざ>"
+    commands.each.with_index(1) do |command, index|
       if command.unlocked == "Y"
         puts "#{index}. #{command.waza} / いりょく: #{command.damage} "
       end
