@@ -20,10 +20,12 @@ allies = Pokemon.import(path: "./csv/allies.csv")
 ally = allies[0]
 
 # パラメータのセット
-ally_command = ally.set_command("./csv/#{ally.command_csv}")
 ally_name = ally.name
-ally_speed = ally.speed.to_i
+ally_commands = ally.set_command("./csv/#{ally.command_csv}")
+ally_exp_point = ally.exp_point.to_i
+ally_level = ally.level
 ally_hp = "▓" * ally.hp.to_i
+# ally_speed = ally.speed.to_i
 
 # トレーナー名をセットする
 trainer = Trainer.new(TRAINER)
@@ -36,54 +38,54 @@ trainer_name = trainer.name
 # バトルインスタンスの生成
 battle = Battle.new
 
-# 指定したバトル回数になるまでバトルを繰り返す
+### ループ1: 指定バトル回数分ループ
 until battle.battle_cnt == battle.wanna_battle_cnt do
 
   # ポケモンをランダムに選択する
   enemy =  enemys[rand(max = enemys.length - 1)]
 
   # パラメータのセット
-  enemy_command = enemy.set_command("./csv/#{enemy.command_csv}")
   enemy_name = enemy.name
+  enemy_command = enemy.set_command("./csv/#{enemy.command_csv}")
   enemy_exp_point = enemy.exp_point.to_i
-  enemy_speed = enemy.speed.to_i
+  enemy_level = enemy.level
   enemy_hp = "▓" * enemy.hp.to_i
-
+  # enemy_speed = enemy.speed.to_i
 
   # 相手ポケモンの出現
-  battle.appear_enemy(enemy)
+  battle.appear_enemy(enemy_name, enemy_hp)
 
-  # 味方ポケモンの召喚
-  battle.put_ally(ally, trainer)
+  # 味方ポケモンを繰り出す
+  battle.put_ally(ally_name, trainer_name)
 
 
 #----------------------------
 # ポケモンバトル: 1バトル
 #----------------------------
-# どちらかが倒れるまでループ
+### ループ2: どちらかが倒れるまでループ
   until enemy_hp.empty? do
 
-  # [自分のターン]
+  # 自分のターン
     # [pokemon] ポケモン：ステータスの表示
-    ally.display_status(ally, ally_hp)
+    ally.display_status(ally_name, ally_level, ally_hp)
 
     # [pokemon] ポケモン：わざの表示
-    ally.display_command(ally, ally_command)
+    ally.display_command(ally_name, ally_commands)
 
     # [trainer] トレーナー：わざの選択
-    decide_a_command = trainer.choice_command(ally, ally_command, trainer)
+    ally_command = trainer.choice_command(ally_name, ally_commands, trainer_name)
 
     # [battle] ダメージ計算
-    enemy_hp = battle.calc_damage(enemy, decide_a_command, enemy_hp)
-    puts ""
-    sleep 0.1
+    enemy_hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
+    # puts ""
+    # sleep 0.1
 
     # 相手ポケモンのHP表示
-    enemy.display_status(enemy, enemy_hp)
+    enemy.display_status(enemy_name, enemy_level, enemy_hp)
 
-  # [相手のターン]
+  # 相手のターン
     # わざの選択(ランダム)
-    decide_e_command = enemy_command.sample
+    enemy_command = enemy_commands.sample
 
     # わざを繰り出す
     puts "野生の #{enemy_name} の、 #{decide_e_command.waza}！"
@@ -91,66 +93,14 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
     sleep 0.1
     puts "#{ally_name} に #{decide_e_command.damage} のダメージ！"
 
-    # オーバーキルになる場合の調整
-    # if ally_hp.length < decide_e_command.chomp.length
-    #   ally_hp = ally_hp.chomp(ally_hp)
-    # else
-    #   ally_hp = ally_hp.chomp(decide_e_command.chomp)
-    # end
-    puts ""
-    sleep 0.1
-
     # 味方ポケモンのHP表示
-    ally.display_status(ally)
-    # if ally_hp.empty?
-    #   puts "★" * battle_cnt
-    #   puts "*" * 30
-    #   puts "#{ally_name}"
-    #   puts "Lv.5 | HP ひんし"
-    #   puts "*" * 30
-    #   puts ""
-    #   # 味方ポケモンのHPが0の時、バトル終了
-    #   break
-    # else
-    #   puts "★" * battle_cnt
-    #   puts "*" * 30
-    #   puts "#{ally_name}"
-    #   puts "Lv.5 | HP #{ally_hp}"
-    #   puts "*" * 30
-    #   puts ""
-    # end
+    ally.display_status(ally, ally_hp)
   end
 
-#----------------------------
-# →→→→→ 1バトル
-#----------------------------
+# 1バトル終了時のメッセージ
+battle.display_reward()
 
-  # バトル終了時
-  if ally_hp.empty?
-    puts "#{ally_name} は たおれた！"
-    puts "#{trainer_name} は めのまえ が まっしろになった。"
-    break
-  elsif enemy_hp.empty?
-    puts "#{enemy_name} は たおれた！"
-
-    # 経験値ロジック
-    puts "#{ally_name} は けいけんちを #{enemy.exp_point} かくとくした！"
-    ally.exp_point += enemy.exp_point
-    if ally.exp_point >= 15
-      ally.level += 1
-      puts "#{ally.name} は レベルが #{ally.level} にあがった！"
-      puts "ハイドロポンプ をおぼえた！"
-    # カウンタの初期化(毎度メッセージが出ることを抑える)
-      ally.exp_point = 0
-    end
-    battle_cnt += 1
-    puts "#{battle_cnt}勝！"
-    puts "★を#{battle_cnt}つ かくとくした！"
-    puts ""
-    puts ""
-    puts ""
-    sleep 0.1
-  end
 end
 
+# 全バトル終了時のメッセージ
 battle.battle_end(trainer)

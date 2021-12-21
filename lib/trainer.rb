@@ -7,8 +7,8 @@ class Trainer
     @name = name
   end
 
-  def choice_command(pokemon, commands, trainer)
-    print "#{pokemon.name} はどうする？ > "
+  def choice_command(pokemon_name, commands, trainer_name)
+    print "#{pokemon_name} はどうする？ > "
     # 入力を必須にする
     loop{
       num = gets.to_i
@@ -27,12 +27,7 @@ class Trainer
     }
     sleep 0.5
     puts ""
-    puts "#{trainer.name}「#{pokemon.name}、 #{commands[@num - 1].waza}！」"
+    puts "#{trainer_name}「#{pokemon_name}、 #{commands[@num - 1].waza}！」"
     commands[@num - 1]
   end
-
-
-    # # コマンドの実行
-    # puts "#{this_allies_name} の #{choice_command.waza}！"
-      # end
 end
