@@ -46,7 +46,7 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
 
   # パラメータのセット
   enemy_name = enemy.name
-  enemy_command = enemy.set_command("./csv/#{enemy.command_csv}")
+  enemy_commands = enemy.set_command("./csv/#{enemy.command_csv}")
   enemy_exp_point = enemy.exp_point.to_i
   enemy_level = enemy.level
   enemy_hp = "▓" * enemy.hp.to_i
@@ -84,23 +84,25 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
     enemy.display_status(enemy_name, enemy_level, enemy_hp)
 
   # 相手のターン
-    # わざの選択(ランダム)
-    enemy_command = enemy_commands.sample
+    if enemy_hp.empty?
+      # 1バトル終了時のメッセージ
+      battle.battle_end(ally, enemy, trainer_name)
+      binding.pry
+    else
+      # わざの選択(ランダム)
+      enemy_command = enemy_commands.sample
 
-    # わざを繰り出す
-    puts "野生の #{enemy_name} の、 #{decide_e_command.waza}！"
-    puts ""
-    sleep 0.1
-    puts "#{ally_name} に #{decide_e_command.damage} のダメージ！"
+      # わざを繰り出す
+      puts "野生の #{enemy_name} の、 #{enemy_command.waza}！"
+      puts ""
+      sleep 0.1
+      puts "#{ally_name} に #{enemy_command.damage} のダメージ！"
 
-    # 味方ポケモンのHP表示
-    ally.display_status(ally, ally_hp)
+      # 味方ポケモンのHP表示
+      ally.display_status(ally_name, ally_level, ally_hp)
+    end
   end
-
-# 1バトル終了時のメッセージ
-battle.display_reward()
-
 end
 
 # 全バトル終了時のメッセージ
-battle.battle_end(trainer)
+battle.battle_end_all(trainer)

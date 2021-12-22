@@ -58,17 +58,15 @@ attr_reader :battle_cnt, :wanna_battle_cnt
     end
   end
 
-  def display_reward()
+  def battle_end(ally, enemy, trainer_name)
     # バトル終了時
-    if ally_hp.empty?
-      puts "#{ally_name} は たおれた！"
+    if ally.hp.empty?
+      puts "#{ally.name} は たおれた！"
       puts "#{trainer_name} は めのまえ が まっしろになった。"
-      break
-    elsif enemy_hp.empty?
-      puts "#{enemy_name} は たおれた！"
-
+    elsif enemy.hp.empty?
+      puts "#{enemy.name} は たおれた！"
       # 経験値ロジック
-      puts "#{ally_name} は けいけんちを #{enemy.exp_point} かくとくした！"
+      puts "#{ally.name} は けいけんちを #{enemy.exp_point} かくとくした！"
       ally.exp_point += enemy.exp_point
       if ally.exp_point >= 15
         ally.level += 1
@@ -77,9 +75,9 @@ attr_reader :battle_cnt, :wanna_battle_cnt
       # カウンタの初期化(毎度メッセージが出ることを抑える)
         ally.exp_point = 0
       end
-      battle_cnt += 1
-      puts "#{battle_cnt}勝！"
-      puts "★を#{battle_cnt}つ かくとくした！"
+      @battle_cnt += 1
+      puts "#{@battle_cnt}勝！"
+      puts "★を#{@battle_cnt}つ かくとくした！"
       puts ""
       puts ""
       puts ""
@@ -87,7 +85,7 @@ attr_reader :battle_cnt, :wanna_battle_cnt
     end
   end
 
-  def battle_end(trainer)
+  def battle_end_all(trainer)
     if @battle_cnt == @wanna_battle_cnt
       puts "#{trainer.name} は 全てのバトルに勝利した！すごい！"
     elsif
