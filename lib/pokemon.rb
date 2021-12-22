@@ -41,9 +41,9 @@ class Pokemon
       if pokemon_hp.empty?
         puts "Lv.#{pokemon_level} | HP ひんし"
       else
-        puts "Lv.#{pokemon_level} | HP #{pokemom_hp}"
+        puts "Lv.#{pokemon_level} | HP #{pokemon_hp}"
       end
-    puts "|" * 10
+    # puts "|" * 10
     puts "*" * 30
     puts ""
     puts ""
