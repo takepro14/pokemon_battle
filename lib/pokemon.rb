@@ -2,14 +2,15 @@ require_relative "command"
 # require "csv"
 
 class Pokemon
-  attr_reader :name, :command_csv, :exp_point, :level, :hp, :speed
+  attr_reader :name, :command_csv, :speed
+  attr_accessor :hp, :exp_point, :level
 
   def initialize(name:, command_csv:, exp_point:, level:, hp:, speed:)
     @name = name
     @command_csv = command_csv
-    @exp_point = exp_point
-    @level = level
-    @hp = hp
+    @exp_point = exp_point.to_i
+    @level = level.to_i
+    @hp = "▓" * hp.to_i
     @speed = speed
   end
 

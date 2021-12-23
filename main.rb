@@ -24,7 +24,7 @@ ally_name = ally.name
 ally_commands = ally.set_command("./csv/#{ally.command_csv}")
 ally_exp_point = ally.exp_point.to_i
 ally_level = ally.level
-ally_hp = "▓" * ally.hp.to_i
+ally_hp = ally.hp
 # ally_speed = ally.speed.to_i
 
 # トレーナー名をセットする
@@ -40,6 +40,7 @@ battle = Battle.new
 
 ### ループ1: 指定バトル回数分ループ
 until battle.battle_cnt == battle.wanna_battle_cnt do
+  # binding.pry
 
   # ポケモンをランダムに選択する
   enemy =  enemys[rand(max = enemys.length - 1)]
@@ -47,9 +48,9 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
   # パラメータのセット
   enemy_name = enemy.name
   enemy_commands = enemy.set_command("./csv/#{enemy.command_csv}")
-  enemy_exp_point = enemy.exp_point.to_i
+  enemy_exp_point = enemy.exp_point
   enemy_level = enemy.level
-  enemy_hp = "▓" * enemy.hp.to_i
+  enemy_hp = enemy.hp
   # enemy_speed = enemy.speed.to_i
 
   # 相手ポケモンの出現
@@ -66,17 +67,18 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
   until enemy_hp.empty? do
 
   # 自分のターン
-    # [pokemon] ポケモン：ステータスの表示
+    # ポケモン：ステータスの表示
     ally.display_status(ally_name, ally_level, ally_hp)
 
-    # [pokemon] ポケモン：わざの表示
+    # ポケモン：わざの表示
     ally.display_command(ally_name, ally_commands)
 
-    # [trainer] トレーナー：わざの選択
+    # トレーナー：わざの選択
     ally_command = trainer.choice_command(ally_name, ally_commands, trainer_name)
 
-    # [battle] ダメージ計算
-    enemy_hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
+    # ダメージ計算し、インスタンスのhpを更新
+    enemy.hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
+    enemy_hp = enemy.hp
     # puts ""
     # sleep 0.1
 
@@ -86,8 +88,8 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
   # 相手のターン
     if enemy_hp.empty?
       # 1バトル終了時のメッセージ
-      battle.battle_end(ally, enemy, trainer_name)
-      binding.pry
+      battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name)
+      # binding.pry
     else
       # わざの選択(ランダム)
       enemy_command = enemy_commands.sample
