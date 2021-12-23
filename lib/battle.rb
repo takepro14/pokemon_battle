@@ -1,6 +1,6 @@
 class Battle
 
-attr_reader :battle_cnt, :wanna_battle_cnt
+attr_accessor :battle_cnt, :wanna_battle_cnt
 
   def initialize
     # バトルカウンタの初期化
@@ -59,6 +59,7 @@ attr_reader :battle_cnt, :wanna_battle_cnt
   end
 
   def battle_end(ally, enemy, trainer_name)
+    # binding.pry
     # バトル終了時
     if ally.hp.empty?
       puts "#{ally.name} は たおれた！"
@@ -68,20 +69,23 @@ attr_reader :battle_cnt, :wanna_battle_cnt
       # 経験値ロジック
       puts "#{ally.name} は けいけんちを #{enemy.exp_point} かくとくした！"
       ally.exp_point += enemy.exp_point
-      if ally.exp_point >= 15
-        ally.level += 1
-        puts "#{ally.name} は レベルが #{ally.level} にあがった！"
-        puts "ハイドロポンプ をおぼえた！"
-      # カウンタの初期化(毎度メッセージが出ることを抑える)
-        ally.exp_point = 0
-      end
+
+      # if ally.exp_point >= 15
+      #   ally.level += 1
+      #   puts "#{ally.name} は レベルが #{ally.level} にあがった！"
+      #   puts "ハイドロポンプ をおぼえた！"
+      # # カウンタの初期化(毎度メッセージが出ることを抑える)
+      #   ally.exp_point = 0
+      # end
       @battle_cnt += 1
+      # binding.pry
       puts "#{@battle_cnt}勝！"
       puts "★を#{@battle_cnt}つ かくとくした！"
       puts ""
       puts ""
       puts ""
       sleep 0.1
+      @battle_cnt
     end
   end
 
