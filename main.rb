@@ -57,8 +57,9 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
   battle.appear_enemy(enemy_name, enemy_hp)
 
   # 味方ポケモンを繰り出す
-  battle.put_ally(ally_name, trainer_name)
-
+  if battle.battle_cnt == 0
+    battle.put_ally(ally_name, trainer_name)
+  end
 
 #----------------------------
 # ポケモンバトル: 1バトル
@@ -100,8 +101,6 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
       sleep 0.1
       puts "#{ally_name} に #{enemy_command.damage} のダメージ！"
 
-      # 味方ポケモンのHP表示
-      ally.display_status(ally_name, ally_level, ally_hp)
     end
   end
 end

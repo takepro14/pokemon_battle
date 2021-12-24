@@ -41,10 +41,7 @@ attr_accessor :battle_cnt, :wanna_battle_cnt
 
   # 味方ポケモンを召喚
   def put_ally(pokemon_name, trainer_name)
-    if @battle_cnt == 0
-      # こちらのポケモンを繰り出す
-      puts "#{trainer_name}「いけっ！ #{pokemon_name}！」"
-    end
+    puts "#{trainer_name}「いけっ！ #{pokemon_name}！」"
   end
 
   def calc_damage(pokemon_name, command, pokemon_hp)
