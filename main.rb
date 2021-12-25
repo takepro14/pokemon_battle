@@ -16,6 +16,8 @@ TRAINER = "たけぴょ"
 enemys = Pokemon.import(path: "./csv/enemys.csv")
 allies = Pokemon.import(path: "./csv/allies.csv")
 
+# binding.pry
+
 # 手持ちの先頭ポケモンをセット
 ally = allies[0]
 
@@ -40,10 +42,11 @@ battle = Battle.new
 
 ### ループ1: 指定バトル回数分ループ
 until battle.battle_cnt == battle.wanna_battle_cnt do
-  # binding.pry
 
   # ポケモンをランダムに選択する
-  enemy =  enemys[rand(max = enemys.length - 1)]
+  enemy_org = enemys[rand(max = enemys.length - 1)]
+  enemy = enemy_org.clone
+  # binding.pry
 
   # パラメータのセット
   enemy_name = enemy.name
@@ -55,10 +58,12 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
 
   # 相手ポケモンの出現
   battle.appear_enemy(enemy_name, enemy_hp)
+  # binding.pry
 
   # 味方ポケモンを繰り出す
-  battle.put_ally(ally_name, trainer_name)
-
+  if battle.battle_cnt == 0
+    battle.put_ally(ally_name, trainer_name)
+  end
 
 #----------------------------
 # ポケモンバトル: 1バトル
@@ -100,8 +105,6 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
       sleep 0.1
       puts "#{ally_name} に #{enemy_command.damage} のダメージ！"
 
-      # 味方ポケモンのHP表示
-      ally.display_status(ally_name, ally_level, ally_hp)
     end
   end
 end
