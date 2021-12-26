@@ -11,7 +11,7 @@ class Pokemon
     @exp_point = exp_point.to_i
     @level = level.to_i
     @hp = "▓" * hp.to_i
-    @speed = speed
+    @speed = speed.to_i
   end
 
   # ポケモンのステータス情報をCSVからインポート
