@@ -24,7 +24,7 @@ ally = allies[0]
 # パラメータのセット
 ally_name = ally.name
 ally_commands = ally.set_command("./csv/#{ally.command_csv}")
-ally_exp_point = ally.exp_point.to_i
+ally_exp_point = ally.exp_point
 ally_level = ally.level
 ally_hp = ally.hp
 ally_speed = ally.speed
@@ -75,7 +75,7 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
 
     # 自分のターン
       # ポケモン：ステータスの表示
-      ally.display_status(ally_name, ally_level, ally_hp)
+      ally.display_status(ally_name, ally_level, ally_hp, ally.exp_point)
 
       # ポケモン：わざの表示
       ally.display_command(ally_name, ally_commands)
@@ -88,12 +88,12 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
       enemy_hp = enemy.hp
 
       # 相手ポケモンのHP表示
-      enemy.display_status(enemy_name, enemy_level, enemy_hp)
+      enemy.display_status(enemy_name, enemy_level, enemy_hp, enemy.exp_point)
 
     # 相手のターン
     if enemy_hp.empty?
       # 1バトル終了時のメッセージ
-      battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name)
+      battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name, ally_commands)
       # binding.pry
     else
       # わざの選択(ランダム)
@@ -112,7 +112,7 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
     # 相手のターン
       if enemy_hp.empty?
         # 1バトル終了時のメッセージ
-        battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name)
+        battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name, ally_commands)
         # binding.pry
       else
         # わざの選択(ランダム)
@@ -127,7 +127,7 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
 
     # 自分のターン
       # ポケモン：ステータスの表示
-      ally.display_status(ally_name, ally_level, ally_hp)
+      ally.display_status(ally_name, ally_level, ally_hp, ally.exp_point)
 
       # ポケモン：わざの表示
       ally.display_command(ally_name, ally_commands)
@@ -140,7 +140,7 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
       enemy_hp = enemy.hp
 
       # 相手ポケモンのHP表示
-      enemy.display_status(enemy_name, enemy_level, enemy_hp)
+      enemy.display_status(enemy_name, enemy_level, enemy_hp, enemy.exp_point)
     end
   end
 end

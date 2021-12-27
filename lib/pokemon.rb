@@ -34,7 +34,7 @@ class Pokemon
   end
 
   # ポケモンのステータスを表示
-  def display_status(pokemon_name, pokemon_level, pokemon_hp)
+  def display_status(pokemon_name, pokemon_level, pokemon_hp, pokemon_exp_point)
     # puts "★" * battle_cnt
     puts "*" * 30
     puts "■ #{pokemon_name}"
@@ -44,7 +44,7 @@ class Pokemon
       else
         puts "Lv.#{pokemon_level} | HP #{pokemon_hp}"
       end
-    # puts "|" * 10
+    puts "|" * pokemon_exp_point
     puts "*" * 30
     puts ""
     puts ""
