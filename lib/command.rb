@@ -2,7 +2,8 @@
 # require "csv"
 
 class Command
-  attr_reader :waza, :damage, :chomp, :unlocked
+  attr_reader :waza, :damage, :chomp
+  attr_accessor :unlocked
 
   def initialize(waza:, damage:, chomp:, unlocked:)
     @waza = waza

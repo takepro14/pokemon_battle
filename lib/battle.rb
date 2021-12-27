@@ -55,7 +55,7 @@ attr_accessor :battle_cnt, :wanna_battle_cnt
     end
   end
 
-  def battle_end(ally, enemy, trainer_name)
+  def battle_end(ally, enemy, trainer_name, commands)
     # binding.pry
     # バトル終了時
     if ally.hp.empty?
@@ -66,14 +66,17 @@ attr_accessor :battle_cnt, :wanna_battle_cnt
       # 経験値ロジック
       puts "#{ally.name} は けいけんちを #{enemy.exp_point} かくとくした！"
       ally.exp_point += enemy.exp_point
+      # binding.pry
 
-      # if ally.exp_point >= 15
-      #   ally.level += 1
-      #   puts "#{ally.name} は レベルが #{ally.level} にあがった！"
-      #   puts "ハイドロポンプ をおぼえた！"
-      # # カウンタの初期化(毎度メッセージが出ることを抑える)
-      #   ally.exp_point = 0
-      # end
+      if ally.exp_point >= 15
+        ally.level += 1
+        puts "#{ally.name} は レベルが #{ally.level} にあがった！"
+        puts "ハイドロポンプ をおぼえた！"
+      # カウンタの初期化(毎度メッセージが出ることを抑える)
+        ally.exp_point = 0
+        commands.unlocked = "Y"
+      end
+
       @battle_cnt += 1
       # binding.pry
       puts "#{@battle_cnt}勝！"
