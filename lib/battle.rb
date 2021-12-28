@@ -74,7 +74,7 @@ attr_accessor :battle_cnt, :wanna_battle_cnt
         puts "ハイドロポンプ をおぼえた！"
       # カウンタの初期化(毎度メッセージが出ることを抑える)
         ally.exp_point = 0
-        commands.unlocked = "Y"
+        commands[4].unlocked = "Y"
       end
 
       @battle_cnt += 1
