@@ -73,43 +73,29 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
     # すばやさの判定
     if ally_speed >= enemy_speed
 
-    # 自分のターン
-      # ポケモン：ステータスの表示
-      ally.display_status(ally_name, ally_level, ally_hp, ally.exp_point)
+      # 自分のターン
+      if ally_hp.empty?
+        battle.battle_end(ally, enemy, trainer_name, ally_commands)
+        battle.battle_end_all(trainer)
+      else
+        # ポケモン：ステータスの表示
+        ally.display_status(ally_name, ally_level, ally_hp, ally.exp_point)
 
-      # ポケモン：わざの表示
-      ally.display_command(ally_name, ally_commands)
+        # ポケモン：わざの表示
+        ally.display_command(ally_name, ally_commands)
 
-      # トレーナー：わざの選択
-      ally_command = trainer.choice_command(ally_name, ally_commands, trainer_name)
+        # トレーナー：わざの選択
+        ally_command = trainer.choice_command(ally_name, ally_commands, trainer_name)
 
-      # ダメージ計算し、インスタンスのhpを更新
-      enemy.hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
-      enemy_hp = enemy.hp
+        # ダメージ計算し、インスタンスのhpを更新
+        enemy.hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
+        enemy_hp = enemy.hp
 
-      # 相手ポケモンのHP表示
-      enemy.display_status(enemy_name, enemy_level, enemy_hp, enemy.exp_point)
+        # 相手ポケモンのHP表示
+        enemy.display_status(enemy_name, enemy_level, enemy_hp, enemy.exp_point)
+      end
 
-    # 相手のターン
-    if enemy_hp.empty?
-      # 1バトル終了時のメッセージ
-      battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name, ally_commands)
-      # binding.pry
-    else
-      # わざの選択(ランダム)
-      enemy_command = enemy_commands.sample
-
-      # わざを繰り出す
-      puts "野生の #{enemy_name} の、 #{enemy_command.waza}！"
-      puts ""
-      sleep 0.1
-      puts "#{ally_name} に #{enemy_command.damage} のダメージ！"
-    end
-
-
-    else
-
-    # 相手のターン
+      # 相手のターン
       if enemy_hp.empty?
         # 1バトル終了時のメッセージ
         battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name, ally_commands)
@@ -123,24 +109,52 @@ until battle.battle_cnt == battle.wanna_battle_cnt do
         puts ""
         sleep 0.1
         puts "#{ally_name} に #{enemy_command.damage} のダメージ！"
+        ally.hp = battle.calc_damage(ally_name, enemy_command, ally_hp)
+        ally_hp = ally.hp
       end
 
-    # 自分のターン
-      # ポケモン：ステータスの表示
-      ally.display_status(ally_name, ally_level, ally_hp, ally.exp_point)
+    else
 
-      # ポケモン：わざの表示
-      ally.display_command(ally_name, ally_commands)
+      # 相手のターン
+        if enemy_hp.empty?
+          # 1バトル終了時のメッセージ
+          battle.battle_cnt = battle.battle_end(ally, enemy, trainer_name, ally_commands)
+          # binding.pry
+        else
+          # わざの選択(ランダム)
+          enemy_command = enemy_commands.sample
 
-      # トレーナー：わざの選択
-      ally_command = trainer.choice_command(ally_name, ally_commands, trainer_name)
+          # わざを繰り出す
+          puts "野生の #{enemy_name} の、 #{enemy_command.waza}！"
+          puts ""
+          sleep 0.1
+          puts "#{ally_name} に #{enemy_command.damage} のダメージ！"
+          ally.hp = battle.calc_damage(ally_name, enemy_command, ally_hp)
+          ally_hp = ally.hp
+        end
 
-      # ダメージ計算し、インスタンスのhpを更新
-      enemy.hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
-      enemy_hp = enemy.hp
+      # 自分のターン
+      if ally_hp.empty?
+        battle.battle_end(ally, enemy, trainer_name, ally_commands)
+        battle.battle_end_all(trainer)
+      else
+        # ポケモン：ステータスの表示
+        ally.display_status(ally_name, ally_level, ally_hp, ally.exp_point)
 
-      # 相手ポケモンのHP表示
-      enemy.display_status(enemy_name, enemy_level, enemy_hp, enemy.exp_point)
+        # ポケモン：わざの表示
+        ally.display_command(ally_name, ally_commands)
+
+        # トレーナー：わざの選択
+        ally_command = trainer.choice_command(ally_name, ally_commands, trainer_name)
+
+        # ダメージ計算し、インスタンスのhpを更新
+        enemy.hp = battle.calc_damage(enemy_name, ally_command, enemy_hp)
+        enemy_hp = enemy.hp
+
+        # 相手ポケモンのHP表示
+        enemy.display_status(enemy_name, enemy_level, enemy_hp, enemy.exp_point)
+      end
+
     end
   end
 end
